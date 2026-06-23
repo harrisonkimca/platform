@@ -35,7 +35,6 @@ __pycache__/
 *$py.class
 *.so
 .Python
-.python-version
 .venv/
 venv/
 env/
@@ -71,9 +70,6 @@ htmlcov/
 .tox/
 .nox/
 .hypothesis/
-
-# uv
-uv.lock
 
 # Alembic and local database artifacts
 alembic/versions/*.pyc
