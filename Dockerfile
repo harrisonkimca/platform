@@ -17,4 +17,4 @@ RUN uv sync --frozen --no-dev
 
 COPY apps/api/src ./apps/api/src
 
-CMD ["python", "-c", "from platform_api.core.config import get_settings; settings = get_settings(); print(f'{settings.app_name} container ready. No API server is configured in Phase 3.')"]
+CMD ["uvicorn", "platform_api.main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -13,10 +13,17 @@ services:
       APP_SECRET_KEY: ${APP_SECRET_KEY:-replace-with-a-local-development-secret}
       PYTHONPATH: /app/apps/api/src
     command:
-      - sh
-      - -c
-      - |
-        python -c "from platform_api.core.config import get_settings; settings = get_settings(); print(f'{settings.app_name} container ready. No API server is configured in Phase 3.')" && sleep infinity
+      - uvicorn
+      - platform_api.main:app
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+      - --reload
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./apps/api/src:/app/apps/api/src
     depends_on:
       postgres:
         condition: service_healthy
