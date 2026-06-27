@@ -1,21 +1,25 @@
 """FastAPI application factory."""
 
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
 from platform_api.api.router import api_router
 from platform_api.core.config import get_settings
+from platform_api.database.session import dispose_async_engine
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     """Manage application startup and shutdown."""
 
     get_settings()
 
-    yield
+    try:
+        yield
+    finally:
+        await dispose_async_engine()
 
 
 def create_app() -> FastAPI:

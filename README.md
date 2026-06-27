@@ -70,7 +70,10 @@ These technologies are not implemented in Phase 0. They are listed to document t
 │   ├── mobile/
 │   └── agents/
 ├── docs/
-│   └── architecture/
+│   ├── ai/
+│   │   └── prompts/
+│   ├── architecture/
+│   └── workflows/
 ├── infra/
 ├── scripts/
 └── tests/
@@ -108,9 +111,22 @@ Agent workflows are separated from the main API surface so they can evolve indep
 
 Contains repository documentation.
 
+Top-level project documents include the roadmap, architecture decisions,
+authentication specification, and project handover notes.
+
+### `docs/ai/prompts/`
+
+Contains reusable AI prompts for phase starts, implementation work,
+architecture review, documentation updates, ADR checks, and phase completion.
+
 ### `docs/architecture/`
 
 Reserved for architecture notes, diagrams, and future Architecture Decision Records.
+
+### `docs/workflows/`
+
+Contains development and operational workflows, including database migration
+workflow documentation.
 
 ### `infra/`
 

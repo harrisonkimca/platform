@@ -11,6 +11,7 @@ services:
       APP_DEBUG: ${APP_DEBUG:-true}
       APP_LOG_LEVEL: ${APP_LOG_LEVEL:-INFO}
       APP_SECRET_KEY: ${APP_SECRET_KEY:-replace-with-a-local-development-secret}
+      DATABASE_URL: ${DATABASE_URL:-postgresql+asyncpg://platform:platform@postgres:5432/platform}
       PYTHONPATH: /app/apps/api/src
     command:
       - uvicorn
@@ -24,6 +25,8 @@ services:
       - "8000:8000"
     volumes:
       - ./apps/api/src:/app/apps/api/src
+      - ./alembic:/app/alembic
+      - ./alembic.ini:/app/alembic.ini:ro
     depends_on:
       postgres:
         condition: service_healthy

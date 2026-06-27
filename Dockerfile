@@ -15,6 +15,8 @@ COPY pyproject.toml uv.lock .python-version README.md ./
 
 RUN uv sync --frozen --no-dev
 
+COPY alembic.ini ./
+COPY alembic ./alembic
 COPY apps/api/src ./apps/api/src
 
 CMD ["uvicorn", "platform_api.main:app", "--host", "0.0.0.0", "--port", "8000"]
