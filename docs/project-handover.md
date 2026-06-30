@@ -36,11 +36,11 @@ Supporting documents:
 
 Current phase:
 
-* Phase 8 – Authentication State Machine
+* Phase 9 – Stateless Authentication
 
 Current step:
 
-* Phase 8 start
+* Phase 9 start
 
 Repository status:
 
@@ -55,6 +55,7 @@ Repository status:
 Implemented:
 
 * Domain layer
+* Application layer foundations
 
 Responsibilities currently represented:
 
@@ -63,6 +64,10 @@ Responsibilities currently represented:
 * Authentication sessions
 * Authentication challenges
 * Authentication state machine contracts
+* Authentication state machine implementation
+* Authentication workflow orchestration
+* Provider authentication contracts
+* Trust-level resolution
 * Recovery model foundations
 
 ## Placeholder Contexts
@@ -115,11 +120,23 @@ Implemented:
 * Repository contracts
 * Domain policy contracts
 * Authentication state machine contracts
+* Authentication state machine implementation
+* Authentication guard implementations
+* Authentication trust resolver
 * Recovery model foundations
 
 ## Identity Application
 
-Folder skeleton only.
+Implemented:
+
+* Authentication provider contracts
+* Authentication workflow result model
+* Authentication orchestrator
+
+Folder skeleton only:
+
+* commands
+* queries
 
 ## Identity Infrastructure
 
@@ -188,8 +205,15 @@ Current status:
 * SessionPolicy
 * AuthChallengePolicy
 * RecoveryEligibilityPolicy
+* AuthenticationTrustResolver
 
-Concrete implementations do not yet exist.
+Concrete implementations:
+
+* DefaultAuthenticationTrustResolver
+
+Concrete implementations do not yet exist for authentication policy,
+credential policy, session policy, challenge policy, or recovery eligibility
+policy.
 
 ## Repository Contracts
 
@@ -208,11 +232,52 @@ Repository implementations do not yet exist.
 * AuthenticationState
 * AuthenticationTrigger
 
-Concrete workflow implementation does not yet exist.
+Concrete workflow implementation:
+
+* DefaultAuthenticationStateMachine
+* StateMachineAuthenticationGuard
+* CompositeAuthenticationGuard
+* InvalidAuthenticationTransition
+
+Implemented transition coverage:
+
+* Email OTP challenge request
+* Email OTP verification
+* OAuth verification
+* Passkey assertion
+* Step-up requirement
+* Step-up verification
+* Recovery request
+* Recovery verification
 
 ## Provider Contracts
 
-Not yet implemented.
+Implemented:
+
+* EmailOtpProvider
+* OAuthIdentityProvider
+* PasskeyAssertionProvider
+* RecoveryProvider
+
+Provider request and result models exist for email OTP, OAuth, passkey
+assertion, and recovery verification.
+
+Provider implementations do not yet exist.
+
+## Application Services
+
+Implemented:
+
+* AuthenticationOrchestrator
+
+Current behavior:
+
+* Coordinates provider verification with authentication state transitions
+* Returns workflow results with transition, trust level, credential subject,
+  or recovery channel data
+* Rejects invalid workflow transitions before provider verification
+
+Persistence-aware authentication use cases do not yet exist.
 
 ---
 
@@ -274,7 +339,21 @@ Current status:
 
 Current Phase:
 
-* Phase 8 – Authentication State Machine
+* Phase 9 – Stateless Authentication
+
+Current SDLC step:
+
+* Phase start
+
+Outstanding:
+
+* Begin Phase 9 using the Phase Start prompt.
+* Implement access token issuance.
+* Implement refresh token issuance.
+* Implement token versioning.
+* Implement refresh rotation.
+* Implement refresh reuse detection.
+* Implement session revocation support.
 
 ---
 
