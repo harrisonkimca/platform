@@ -81,6 +81,22 @@ class CredentialStatus(StrEnum):
     REVOKED = "revoked"
 
 
+class RecoveryChannelKind(StrEnum):
+    """Supported channel categories for account recovery decisions."""
+
+    EMAIL = "email"
+    OAUTH = "oauth"
+    BACKUP_EMAIL = "backup_email"
+
+
+class RecoveryTier(StrEnum):
+    """Escalation tiers for account recovery decisions."""
+
+    TIER_1 = "tier_1"
+    TIER_2 = "tier_2"
+    TIER_3 = "tier_3"
+
+
 class UserStatus(StrEnum):
     """Lifecycle states for identity users."""
 

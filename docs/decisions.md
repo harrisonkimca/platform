@@ -1,8 +1,37 @@
 # Architecture Decision Records
 
-This document records major architectural decisions that shape the system.
+## Purpose
 
-Architectural constraints should not be changed without updating the relevant ADR.
+This document records the permanent architectural decisions that govern
+the design and evolution of the project.
+
+Responsibilities
+
+* Record significant architectural decisions.
+* Define long-term architectural constraints.
+* Preserve the history of architectural decisions.
+* Guide future implementation without recording implementation progress.
+
+This document is **not**:
+
+* an implementation log,
+* a project status report,
+* a roadmap,
+* or a design discussion.
+
+Architectural decisions should be recorded only when a decision:
+
+* affects future development,
+* introduces a long-term architectural constraint,
+* or changes the architectural direction of the project.
+
+Existing ADRs are historical records and must never be modified or
+removed.
+
+If an architectural decision changes, append a new ADR that supersedes
+the previous decision rather than rewriting history.
+
+This document changes only when a new architectural decision is made.
 
 ---
 
@@ -16,9 +45,11 @@ Authentication will be implemented using passwordless mechanisms.
 
 ## Reason
 
-Passwords introduce credential management complexity, increase attack surface, and create recovery challenges.
+Passwords introduce credential management complexity, increase attack
+surface, and complicate account recovery.
 
-The platform is being designed around modern authentication mechanisms from the beginning.
+The platform is designed around modern authentication mechanisms from
+the outset.
 
 ## Consequences
 
@@ -36,25 +67,29 @@ Password reset workflows are not required.
 
 ## Decision
 
-Authentication credentials are represented by a single Credential aggregate.
+Authentication credentials are represented by a single Credential
+aggregate.
 
-Separate credential aggregates will not be created for individual authentication mechanisms.
+Separate credential aggregates will not be created for individual
+authentication mechanisms.
 
 ## Reason
 
-Authentication methods share many common behaviors and lifecycle requirements.
+Authentication methods share common behaviors and lifecycle
+requirements.
 
 A unified credential model simplifies future expansion.
 
 ## Consequences
 
-The credential model must support:
+The Credential aggregate must support:
 
 * Email OTP
 * OAuth providers
 * Passkeys
 
-Future credential types should integrate into the existing model whenever practical.
+Future credential types should integrate into the existing model
+whenever practical.
 
 ---
 
@@ -62,19 +97,22 @@ Future credential types should integrate into the existing model whenever practi
 
 ## Decision
 
-Credential ownership and identity references are represented through CredentialSubject.
+Credential ownership and identity references are represented through
+CredentialSubject.
 
 ## Reason
 
-Different credential providers identify users differently.
+Different authentication providers identify users differently.
 
-CredentialSubject provides a consistent abstraction across authentication methods.
+CredentialSubject provides a consistent abstraction across
+authentication mechanisms.
 
 ## Consequences
 
 Credential implementations remain provider-agnostic.
 
-New authentication providers can be added without changing aggregate boundaries.
+New authentication providers can be introduced without changing
+aggregate boundaries.
 
 ---
 
@@ -82,19 +120,23 @@ New authentication providers can be added without changing aggregate boundaries.
 
 ## Decision
 
-Authentication workflow state is owned by AuthenticationStateMachine.
+Authentication workflow state is owned by the
+AuthenticationStateMachine.
 
 Authentication state is not stored directly on domain aggregates.
 
 ## Reason
 
-Authentication flow progression is workflow behavior rather than business identity data.
+Authentication progression is workflow behavior rather than persistent
+business identity data.
 
-Separating workflow state from aggregates improves flexibility and reduces coupling.
+Separating workflow state from aggregates improves flexibility and
+reduces coupling.
 
 ## Consequences
 
-User, Credential, and AuthChallenge remain focused on domain responsibilities.
+User, Credential, and AuthChallenge remain focused on domain
+responsibilities.
 
 Authentication workflows can evolve independently.
 
@@ -110,13 +152,14 @@ Repository contracts are defined before persistence implementations.
 
 Domain boundaries should be established before infrastructure concerns.
 
-This preserves domain-first design and avoids premature persistence decisions.
+This preserves a domain-first design and prevents premature persistence
+decisions.
 
 ## Consequences
 
 Repository interfaces exist before SQLAlchemy implementations.
 
-Persistence details remain isolated within infrastructure layers.
+Persistence remains isolated within the infrastructure layer.
 
 ---
 
@@ -124,25 +167,18 @@ Persistence details remain isolated within infrastructure layers.
 
 ## Decision
 
-Pyright strict mode is required for the entire project.
+Pyright strict mode is mandatory across the repository.
 
 ## Reason
 
-Strong static analysis improves maintainability and catches defects early.
+Strong static analysis improves maintainability and detects defects
+early.
 
 The project favors explicit typing and long-term maintainability.
 
 ## Consequences
 
-New code must satisfy strict type checking.
+All new code must satisfy strict type checking.
 
-Type safety is treated as an architectural requirement rather than an optional quality improvement.
-
-
-Looking at roadmap, some future ADRs:
-
-ADR-007 CQRS Read/Write Separation
-ADR-008 Domain Events as Integration Boundary
-ADR-009 Outbox Pattern for Reliable Event Publication
-ADR-010 Saga Orchestration for Distributed Workflows
-ADR-011 Kafka as Event Backbone
+Type safety is treated as an architectural requirement rather than an
+optional quality improvement.

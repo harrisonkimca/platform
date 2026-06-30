@@ -1,112 +1,187 @@
 # Roadmap
 
-## Vision
+## Purpose
 
-Build a backend-first passwordless authentication platform that supports:
+This document is the implementation contract for the project.
 
+Responsibilities
+
+- Define the implementation phases.
+- Define the deliverables for each phase.
+- Record implementation progress.
+- Define the order in which work is completed.
+
+This document defines what the repository should implement next.
+
+It does not describe the current implementation state.
+
+## Overall Vision
+
+Build a backend-first fintech platform using a modular monolith architecture with clear DDD-inspired boundaries.
+
+The platform is intended to support:
+
+* Passwordless authentication
 * Email OTP authentication
-* OAuth authentication (Google, Apple)
-* Passkeys (WebAuthn)
+* OAuth authentication
+* Passkeys
 * Tiered account recovery
 * Stateless JWT authentication
 * Session management and revocation
 * CQRS adoption
 * Event-driven evolution
 * Future multi-service extraction
-
-Architecture goals:
-
-* Modular Monolith
-* DDD-inspired boundaries
-* CQRS-ready
-* Event-driven evolution
-* Saga orchestration capable
-* Strict typing with Pyright
-* Container-first deployment
+* AI streaming infrastructure
+* Future AI agent support
 
 ---
 
-# Completed Phases
-
-## Phase 0 - Project Foundation
+# Phase 0 - Project Foundation
 
 Goal:
-Establish repository structure, tooling, and development standards.
+
+Establish repository structure, documentation, ignore rules, and development standards.
 
 Status:
+
 Complete
+
+Deliverables:
+
+* Initial repository structure
+* README
+* Documentation folder structure
+* Test folder structure
+* Application folder placeholders
 
 ---
 
-## Phase 1 - Core Architecture Foundation
+# Phase 1 - Core Architecture Foundation
 
 Goal:
-Establish modular monolith architecture and bounded contexts.
+
+Establish modular monolith architecture and bounded-context direction.
 
 Status:
+
 Complete
+
+Deliverables:
+
+* Modular monolith direction
+* Bounded-context folder structure
+* DDD-inspired layer boundaries
+* Initial context placeholders
 
 ---
 
-## Phase 2 - Shared Building Blocks
+# Phase 2 - Shared Building Blocks
 
 Goal:
-Create shared primitives, identifiers, and common abstractions.
+
+Create shared application and infrastructure foundations.
 
 Status:
+
 Complete
+
+Deliverables:
+
+* Shared application layer
+* Unit of Work contract
+* Shared infrastructure layer
+* SQLAlchemy Unit of Work implementation
 
 ---
 
-## Phase 3 - Infrastructure Foundation
+# Phase 3 - Infrastructure Foundation
 
 Goal:
-Create infrastructure patterns and persistence foundations.
+
+Create local development and persistence foundations.
 
 Status:
+
 Complete
+
+Deliverables:
+
+* Dockerfile
+* Docker Compose
+* PostgreSQL service
+* Redis service
+* Environment configuration
+* SQLAlchemy base
+* Async SQLAlchemy session setup
+* Alembic configuration
 
 ---
 
-## Phase 4 - API Foundation
+# Phase 4 - API Foundation
 
 Goal:
+
 Create FastAPI entry points and application wiring.
 
 Status:
+
 Complete
+
+Deliverables:
+
+* FastAPI application factory
+* Application lifespan management
+* Top-level API router
+* Health endpoint
+* Settings dependency
 
 ---
 
-## Phase 5 - Security Foundation
+# Phase 5 - Security Foundation
 
 Goal:
-Establish security primitives and authentication infrastructure.
+
+Establish minimal security-related configuration foundations.
 
 Status:
+
 Complete
+
+Deliverables:
+
+* Required application secret configuration
+* Environment validation
+* Production debug-mode guard
 
 ---
 
-## Phase 6 - Authentication Foundations
+# Phase 6 - Authentication Foundations
 
 Goal:
-Prepare the project for passwordless authentication workflows.
+
+Prepare the project for passwordless authentication modeling.
 
 Status:
+
 Complete
+
+Deliverables:
+
+* Passwordless authentication requirements documented
+* Authentication architecture decisions documented
+* Identity context prepared for authentication domain modeling
 
 ---
 
-# Current Phase
-
-## Phase 7 - Identity Domain
-
-Status:
-In Progress
+# Phase 7 - Identity Domain
 
 Goal:
-Implement the core identity model that supports all authentication methods.
+
+Implement the core Identity domain foundation that supports passwordless authentication methods while remaining independent of transport, persistence, and external identity providers.
+
+Status:
+
+Complete
 
 Deliverables:
 
@@ -116,7 +191,7 @@ Deliverables:
 * AuthSession entity
 * Identity value objects
 * Repository contracts
-* Domain services
+* Domain service contracts
 * Authentication state machine contracts
 * Recovery model foundations
 
@@ -124,64 +199,50 @@ Progress:
 
 Completed:
 
-* User aggregate skeleton
-* Credential entity skeleton
-* AuthChallenge entity skeleton
-* AuthSession entity skeleton
+* User aggregate
+* Credential entity
+* AuthChallenge entity
+* AuthSession entity
 * Identity value objects
 * Repository contracts
-* Provider contracts
+* Domain service contracts
 * Authentication state machine contracts
-* Pyright strict mode alignment
-
-Remaining:
-
 * Recovery model foundations
-* Phase completion review
-
-Future Evolution:
-
-* Supports passkeys
-* Supports OAuth identities
-* Supports tiered recovery
-* Supports CQRS adoption
-* Supports event-driven evolution
 
 ---
 
-# Future Phases
-
-## Phase 8 - Authentication State Machine
+# Phase 8 - Authentication State Machine
 
 Goal:
+
 Implement authentication workflow orchestration.
 
-Why:
-Authentication behavior must be modeled independently from transport and UI concerns.
+Status:
+
+Current
 
 Deliverables:
 
 * AuthenticationStateMachine implementation
-* Triggers
-* Transition rules
-* Guards
+* Authentication triggers
+* State transition rules
+* Guard implementations
+* Provider contracts
+* Provider authentication orchestration
 * Recovery transitions
 * Trust-level transitions
 
-Future Evolution:
-
-* Can evolve into workflow orchestration
-* Can later participate in saga coordination
-
 ---
 
-## Phase 9 - Stateless Authentication
+# Phase 9 - Stateless Authentication
 
 Goal:
+
 Implement token-based authentication.
 
-Why:
-Provide secure stateless authentication for APIs.
+Status:
+
+Not Started
 
 Deliverables:
 
@@ -192,20 +253,17 @@ Deliverables:
 * Refresh reuse detection
 * Session revocation support
 
-Future Evolution:
-
-* Supports distributed deployments
-* Supports service extraction
-
 ---
 
-## Phase 10 - Authentication Application Layer
+# Phase 10 - Authentication Application Layer
 
 Goal:
+
 Implement authentication use cases.
 
-Why:
-Separate domain behavior from application orchestration.
+Status:
+
+Not Started
 
 Deliverables:
 
@@ -215,19 +273,17 @@ Deliverables:
 * Session workflows
 * Recovery workflows
 
-Future Evolution:
-
-* Supports CQRS command handlers
-
 ---
 
-## Phase 11 - Passkeys (WebAuthn)
+# Phase 11 - Passkeys (WebAuthn)
 
 Goal:
+
 Implement passkey registration and authentication.
 
-Why:
-Passkeys are the primary authentication method.
+Status:
+
+Not Started
 
 Deliverables:
 
@@ -236,20 +292,17 @@ Deliverables:
 * Credential management
 * Multi-device passkeys
 
-Future Evolution:
-
-* Hardware security key support
-* Enterprise passkey policies
-
 ---
 
-## Phase 12 - Recovery System
+# Phase 12 - Recovery System
 
 Goal:
+
 Implement tiered account recovery.
 
-Why:
-Users must be able to recover access without passwords.
+Status:
+
+Not Started
 
 Deliverables:
 
@@ -258,17 +311,17 @@ Deliverables:
 * Recovery notifications
 * Risk-based recovery controls
 
-Future Evolution:
-
-* Tier 3 identity verification
-* Automated recovery workflows
-
 ---
 
-## Phase 13 - Domain Events
+# Phase 13 - Domain Events
 
 Goal:
+
 Introduce domain events.
+
+Status:
+
+Not Started
 
 Deliverables:
 
@@ -276,16 +329,17 @@ Deliverables:
 * Event publication model
 * Event dispatch abstractions
 
-Future Evolution:
-
-* Event-driven architecture
-
 ---
 
-## Phase 14 - In-Memory Event Bus
+# Phase 14 - In-Memory Event Bus
 
 Goal:
+
 Implement internal event dispatching.
+
+Status:
+
+Not Started
 
 Deliverables:
 
@@ -293,16 +347,17 @@ Deliverables:
 * Event handlers
 * Event subscriptions
 
-Future Evolution:
-
-* Outbox integration
-
 ---
 
-## Phase 15 - CQRS Foundation
+# Phase 15 - CQRS Foundation
 
 Goal:
+
 Prepare command and query separation.
+
+Status:
+
+Not Started
 
 Deliverables:
 
@@ -310,16 +365,17 @@ Deliverables:
 * Query contracts
 * Handler contracts
 
-Future Evolution:
-
-* Full CQRS
-
 ---
 
-## Phase 16 - Read Models
+# Phase 16 - Read Models
 
 Goal:
+
 Create dedicated query projections.
+
+Status:
+
+Not Started
 
 Deliverables:
 
@@ -327,16 +383,17 @@ Deliverables:
 * Projection handlers
 * Query services
 
-Future Evolution:
-
-* Separate read stores
-
 ---
 
-## Phase 17 - Background Jobs
+# Phase 17 - Background Jobs
 
 Goal:
+
 Implement asynchronous processing.
+
+Status:
+
+Not Started
 
 Deliverables:
 
@@ -344,16 +401,17 @@ Deliverables:
 * Scheduling infrastructure
 * Worker execution
 
-Future Evolution:
-
-* Distributed processing
-
 ---
 
-## Phase 18 - Outbox Pattern
+# Phase 18 - Outbox Pattern
 
 Goal:
+
 Provide reliable event publication.
+
+Status:
+
+Not Started
 
 Deliverables:
 
@@ -361,16 +419,17 @@ Deliverables:
 * Outbox relay
 * Retry handling
 
-Future Evolution:
-
-* External messaging
-
 ---
 
-## Phase 19 - Saga Orchestration
+# Phase 19 - Saga Orchestration
 
 Goal:
+
 Coordinate long-running workflows.
+
+Status:
+
+Not Started
 
 Deliverables:
 
@@ -378,16 +437,17 @@ Deliverables:
 * Saga state management
 * Authentication recovery workflows
 
-Future Evolution:
-
-* Cross-service workflows
-
 ---
 
-## Phase 20 - AI Streaming Infrastructure
+# Phase 20 - AI Streaming Infrastructure
 
 Goal:
+
 Provide streaming foundations for future AI features.
+
+Status:
+
+Not Started
 
 Deliverables:
 
@@ -395,16 +455,17 @@ Deliverables:
 * Token streaming support
 * Transport contracts
 
-Future Evolution:
-
-* Agent integrations
-
 ---
 
-## Phase 21 - AI Agent Framework
+# Phase 21 - AI Agent Framework
 
 Goal:
+
 Support agent-based workflows.
+
+Status:
+
+Not Started
 
 Deliverables:
 
@@ -412,16 +473,17 @@ Deliverables:
 * Tool execution framework
 * Agent orchestration
 
-Future Evolution:
-
-* Multi-agent systems
-
 ---
 
-## Phase 22 - Multi-Service Extraction
+# Phase 22 - Multi-Service Extraction
 
 Goal:
+
 Prepare bounded contexts for independent deployment.
+
+Status:
+
+Not Started
 
 Deliverables:
 
@@ -429,23 +491,20 @@ Deliverables:
 * Integration boundaries
 * Deployment strategy
 
-Future Evolution:
-
-* Service decomposition
-
 ---
 
-## Phase 23 - Kafka Integration
+# Phase 23 - Kafka Integration
 
 Goal:
+
 Introduce external event streaming.
+
+Status:
+
+Not Started
 
 Deliverables:
 
 * Kafka producers
 * Kafka consumers
 * Event contracts
-
-Future Evolution:
-
-* Full event-driven architecture

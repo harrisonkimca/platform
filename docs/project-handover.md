@@ -1,377 +1,286 @@
 # Project Handover
 
-## Project Overview
+## Purpose
 
-Backend-first passwordless authentication platform designed for future CQRS adoption and event-driven evolution.
+This document is a snapshot of the current repository implementation.
 
-Primary goals:
+Responsibilities
 
-* Passwordless authentication
-* Stateless authentication
-* Passkey-first user experience
-* Strong domain boundaries
-* Future CQRS support
-* Future Saga orchestration support
-* Future multi-service extraction
+- Describe what currently exists in the repository.
+- Summarize the implemented architecture.
+- Record the current implementation phase.
+- Describe implemented domain concepts.
+- Describe implemented infrastructure.
+- Describe outstanding implementation work.
+
+This document is updated after implementation work.
+
+It does not define future work or architectural intent.
+
+It records what is currently implemented in the codebase and is intended to support continuation in a new development session.
+
+Source of truth:
+
+* Source code
+
+Supporting documents:
+
+* `README.md`
+* `docs/roadmap.md`
+* `docs/authentication-spec.md`
+* `docs/decisions.md`
 
 ---
 
-# Technology Stack
+# Repository Status
 
-## Runtime
+Current phase:
 
-* Python 3.12
+* Phase 8 – Authentication State Machine
+
+Current step:
+
+* Phase 8 start
+
+Repository status:
+
+* In Progress
+
+---
+
+# Implemented Contexts
+
+## Identity
+
+Implemented:
+
+* Domain layer
+
+Responsibilities currently represented:
+
+* Users
+* Credentials
+* Authentication sessions
+* Authentication challenges
+* Authentication state machine contracts
+* Recovery model foundations
+
+## Placeholder Contexts
+
+Directory skeletons only:
+
+* ai_agents
+* portfolios
+* transactions
+* notifications
+
+---
+
+# Implemented Layers
 
 ## API
 
-* FastAPI
+* FastAPI application factory
+* Top-level API router
+* `/health` endpoint
+
+## Core
+
+* Environment settings
+* Settings dependency provider
 
 ## Database
 
-* PostgreSQL
+* SQLAlchemy declarative base
+* Metadata naming convention
+* Database URL normalization
+* Async engine factory
+* Async session factory
+* FastAPI database dependency
 
-## Cache / Ephemeral Storage
+## Shared Application
 
-* Redis
+* UnitOfWork contract
 
-## Infrastructure
+## Shared Infrastructure
 
-* Docker
+* SQLAlchemy UnitOfWork
 
-## Tooling
+## Identity Domain
 
-* uv
-* Ruff
-* Pyright strict mode
+Implemented:
 
----
-
-# Architecture
-
-## Style
-
-* Modular Monolith
-* Bounded Contexts
-* DDD Layers
-* CQRS-ready
-* Event-driven evolution planned
-
-## Current Contexts
-
-### Identity
-
-Responsible for:
-
-* Authentication
-* Credentials
-* Sessions
-* Recovery
-* Identity Providers
-
-Future contexts may be introduced as the platform evolves.
-
----
-
-# Architectural Structure
-
-The project follows a modular monolith architecture organized by bounded context.
-
-Each context is structured using DDD layers:
-
-context/
-├── domain/
-├── application/
-├── infrastructure/
-└── presentation/
-
-## Layer Responsibilities
-
-### Domain
-
-* Aggregates
 * Entities
-* Value Objects
-* Domain Services
-* Domain Events
-* Repository Contracts
+* Value objects
+* Repository contracts
+* Domain policy contracts
+* Authentication state machine contracts
+* Recovery model foundations
 
-### Application
+## Identity Application
 
-* Commands
-* Queries
-* Handlers
-* DTOs
+Folder skeleton only.
 
-### Infrastructure
+## Identity Infrastructure
 
-* Persistence
-* External Integrations
-* Messaging
+Folder skeleton only.
 
-### Presentation
+## Identity Presentation
 
-* HTTP APIs
-* Request/Response Models
-
-Some layers may be introduced incrementally as the project evolves.
+Folder skeleton only.
 
 ---
 
-# Authentication Strategy
+# Implemented Domain Concepts
 
-## Core Principles
-
-* No password authentication
-* Passwordless-first
-* Stateless authentication
-* State-machine-driven authentication
-
-## Authentication Methods
-
-### Tier 1
-
-Email OTP
-
-### Tier 2
-
-Passkeys (WebAuthn)
-
-### Tier 3
-
-Account Recovery
-
-Status:
-Deferred pending additional research.
-
-## Additional Authentication Sources
-
-* Google OAuth
-* Apple OAuth
-
-Supported through the credential model.
-
----
-
-# Identity Domain
-
-## Current Aggregates
+## Entities
 
 * User
 * Credential
 * AuthSession
 * AuthChallenge
 
-## Current Value Objects
+Current status:
 
+* Entity skeletons only
+
+## Value Objects
+
+* UserId
+* CredentialId
+* AuthSessionId
+* AuthChallengeId
+* DeviceId
+* EmailAddress
+* ProviderName
+* ProviderSubject
+* ProviderIdentity
+* PasskeyCredentialId
+* TokenVersion
+* EmailCredentialSubject
+* OAuthCredentialSubject
+* PasskeyCredentialSubject
 * CredentialSubject
+* AuthenticationTransition
+* EmailRecoveryChannel
+* OAuthRecoveryChannel
+* BackupEmailRecoveryChannel
+* RecoveryChannel
+
+## Domain Enums
+
+* AuthChallengeKind
+* AuthChallengeStatus
+* AuthenticationState
+* AuthenticationTrigger
+* AuthSessionStatus
+* AuthTrustLevel
+* CredentialKind
+* CredentialStatus
+* RecoveryChannelKind
+* RecoveryTier
+* UserStatus
+
+## Domain Service Contracts
+
+* AuthenticationPolicy
+* CredentialPolicy
+* SessionPolicy
+* AuthChallengePolicy
+* RecoveryEligibilityPolicy
+
+Concrete implementations do not yet exist.
+
+## Repository Contracts
+
+* UserRepository
+* CredentialRepository
+* AuthSessionRepository
+* AuthChallengeRepository
+
+Repository implementations do not yet exist.
+
+## Authentication State Machine Contracts
+
+* AuthenticationStateMachine
+* AuthenticationGuard
 * AuthenticationTransition
 * AuthenticationState
 * AuthenticationTrigger
 
-Additional domain concepts may be introduced as the system evolves.
+Concrete workflow implementation does not yet exist.
+
+## Provider Contracts
+
+Not yet implemented.
 
 ---
 
-# Credential Strategy
+# Implemented Infrastructure
 
-## Credential Model
+## Runtime
 
-Generic credential model.
+* FastAPI
+* Docker
+* Docker Compose
 
-Credential types are represented through abstractions rather than separate aggregates.
+## Database
 
-## CredentialSubject
+Implemented:
 
-Supports:
+* SQLAlchemy async infrastructure
+* Alembic configuration
+* SQLAlchemy UnitOfWork
 
-* Email identities
-* OAuth identities
-* Passkeys
+Not yet implemented:
 
----
+* ORM models
+* Repository implementations
+* Database tables
+* Migration revisions
 
-# Authentication State Strategy
+## Environment
 
-Authentication state is not stored on:
-
-* User
-* Credential
-* AuthChallenge
-
-Authentication workflow state is owned by:
-
-* AuthenticationStateMachine
-
-Authentication transitions are represented as:
-
-* Current state
-* Trigger
-* Next state
-
-Transition guards are represented through domain contracts and are not yet implemented as concrete policies.
-
-This allows authentication behavior to evolve independently from domain entities.
-
----
-
-# Repository Strategy
-
-## Repository Design
-
-Repository contracts only.
-
-Current repositories define persistence boundaries but do not contain implementation details.
-
-## Unit of Work
-
-Retained as the transactional boundary.
-
----
-
-# Architectural Constraints
-
-The following constraints must not be violated without updating the ADRs:
-
-* No password authentication
-* No framework dependencies in the domain layer
-* No persistence logic inside domain entities
-* Authentication state owned by AuthenticationStateMachine
-* Repository contracts before repository implementations
-* UnitOfWork remains the transactional boundary
-
----
-
-# Current Implementation Status
-
-## Implemented
-
-### Foundation
-
-* Repository structure
-* Dependency management
 * Environment configuration
-* Docker foundation
+* Database configuration
 
-### Tooling
+---
 
+# Configured Tooling
+
+Configured:
+
+* uv
 * Ruff
-* Pyright strict mode configuration
-* Pyright strict mode verification
+* Pyright (strict)
+* pytest
+* Alembic
+* Docker
+* Docker Compose
 
-### API
+Quality gates:
 
-* FastAPI bootstrap
+* `uv run pyright`
+* `uv run ruff check .`
+* `uv run pytest`
 
-### Identity Domain
+Current status:
 
-* Identity contracts
-* Domain entity skeletons
-* Value objects
-* Repository contracts
-* Provider contracts
-* Authentication state machine contracts
-* Authentication transition value object
-* Authentication guard contract
+* All passing
 
 ---
 
-## Not Yet Implemented
-
-### Persistence
-
-* SQLAlchemy models
-* Database repositories
-* Migrations
-
-### Authentication
-
-* Authentication workflows
-* OTP verification
-* OAuth integrations
-* Passkey implementation
-
-### Application Layer
-
-* Commands
-* Queries
-* Handlers
-
-### Eventing
-
-* Domain events
-* Event bus
-* Outbox pattern
-
-### Distributed Workflows
-
-* Saga orchestration
-
-### CQRS
-
-* Read models
-* Projections
-* Query infrastructure
-
----
-
-# Deferred Decisions
-
-The following decisions are intentionally postponed:
-
-* Account recovery design
-* Passkey recovery strategy
-* Event bus implementation
-* Outbox implementation
-* Saga implementation
-* Service extraction boundaries
-* Kafka adoption strategy
-
----
-
-# Current Progress
+# Outstanding Implementation
 
 Current Phase:
-Phase 7 – Identity Domain
 
-Current Step:
-Step 6 – Phase 7 Completion Review
-
-Status:
-Ready
-
-Completed Steps:
-
-* Step 1
-* Step 2
-* Step 3
-* Step 4
-* Step 5
-
-Recent Quality Checks:
-
-* uv run pyright
-* uv run ruff check .
-* uv run pytest
-
----
-
-# Active ADRs
-
-* ADR-001 Passwordless-first Authentication
-* ADR-002 Generic Credential Model
-* ADR-003 CredentialSubject Abstraction
-* ADR-004 AuthenticationStateMachine Owns Authentication State
-* ADR-005 Repository Contracts Before Persistence Implementations
-* ADR-006 Pyright Strict Mode
-
-Full details:
-
-See `decisions.md`
+* Phase 8 – Authentication State Machine
 
 ---
 
 # Reference Documents
 
-* roadmap.md
-* authentication-spec.md
-* decisions.md
+* README.md
+* docs/roadmap.md
+* docs/authentication-spec.md
+* docs/decisions.md

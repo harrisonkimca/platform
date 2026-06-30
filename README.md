@@ -1,37 +1,205 @@
 # Fintech Platform
 
-A modern fintech platform foundation designed for maintainability, simplicity, modularity, future evolution, and developer productivity.
+## Purpose
 
-This repository is intentionally at Phase 0. It contains only the initial repository foundation: documentation, ignore rules, and the top-level folder structure. It does not yet contain FastAPI, Docker, PostgreSQL, Redis, authentication, business logic, migrations, or frontend code.
+This document defines the long-term vision and architectural direction of
+the project.
 
-## Architecture Direction
+Responsibilities
 
-The intended backend architecture is a modular monolith with DDD-inspired boundaries.
+- Describe the project's purpose and intended capabilities.
+- Define the architectural philosophy.
+- Describe the intended technology stack.
+- Describe the long-term repository structure.
+- Communicate the project's guiding principles.
 
-The platform is expected to support:
+This document intentionally changes very rarely.
 
-- Web applications
-- Mobile applications
-- AI agents
-- AI streaming responses
+It does not track implementation progress, completed work, or the current
+state of the repository.
+
+---
+
+## Project Overview
+
+A backend-first passwordless authentication platform designed for long-term maintainability, simplicity, modularity, and future evolution.
+
+The project is intentionally architected so it can evolve from a modular monolith into an event-driven system without requiring fundamental redesign.
+
+The goal is not merely to build authentication, but to establish an architecture capable of supporting web applications, mobile applications, AI agents, and future distributed services while remaining understandable for a single maintainer.
+
+---
+
+# Vision
+
+Build a professional-grade authentication platform that provides:
+
+- Passwordless authentication
+- Passkeys (WebAuthn)
+- Email OTP
+- Google OAuth
+- Apple OAuth
+- Tiered account recovery
+- Stateless authentication
+- Session management
+- Future CQRS
 - Future event-driven architecture
-- Future microservice extraction
 
-The architecture favors a modular monolith first because it keeps development simple for a single maintainer while preserving clear boundaries for later growth. This avoids the operational cost of early microservices while still allowing selected modules to be extracted later if the business need appears.
+The platform favors long-term maintainability over short-term convenience.
 
-## Core Principles
+---
 
-1. Maintainability over cleverness
-2. Simplicity before abstraction
-3. Clear module boundaries
-4. Production-minded defaults
-5. Twelve-Factor App principles
-6. Strict typing and explicit contracts
-7. Future evolution without premature infrastructure
+# Architecture Philosophy
 
-## Planned Technology Direction
+The architecture is guided by a small number of long-lived principles.
 
-Backend:
+## Modular Monolith First
+
+The system begins as a modular monolith.
+
+This provides clear module boundaries while avoiding the operational complexity of distributed systems.
+
+Individual bounded contexts should be capable of later extraction into independent services without requiring significant redesign.
+
+Microservices are considered an evolutionary outcome—not an initial architectural choice.
+
+---
+
+## Domain-Driven Design
+
+Business capabilities are organized into bounded contexts.
+
+Each context follows layered architecture:
+
+- Domain
+- Application
+- Infrastructure
+- Presentation
+
+The domain remains independent of frameworks.
+
+Frameworks support the domain.
+
+They do not define it.
+
+---
+
+## Authentication Philosophy
+
+Authentication is passwordless-first.
+
+Passwords are intentionally excluded from the architecture.
+
+Supported authentication methods include:
+
+- Email OTP
+- Passkeys
+- OAuth identities
+
+Authentication behavior is modeled independently from transport and UI.
+
+---
+
+## State Machine Driven Authentication
+
+Authentication workflow is modeled explicitly using state machines.
+
+Workflow state belongs to AuthenticationStateMachine.
+
+It does not belong to:
+
+- User
+- Credential
+- AuthSession
+- AuthChallenge
+
+This keeps workflow behavior independent from domain entities.
+
+---
+
+## Generic Credential Model
+
+Credentials are represented through a generic credential abstraction.
+
+Credential types become value objects rather than separate aggregates.
+
+This allows the platform to support:
+
+- Email identities
+- OAuth identities
+- Passkeys
+
+without redesigning the domain model.
+
+---
+
+## Repository Strategy
+
+Repository contracts belong to the domain.
+
+Repository implementations belong to infrastructure.
+
+The application depends upon contracts rather than persistence technology.
+
+---
+
+## Unit of Work
+
+Application use cases execute inside a Unit of Work.
+
+The Unit of Work represents the transactional boundary of the system.
+
+---
+
+## CQRS Evolution
+
+The platform is designed to support CQRS.
+
+CQRS is introduced only when it improves the model.
+
+The project intentionally avoids premature command/query separation.
+
+---
+
+## Event-Driven Evolution
+
+The architecture is designed for incremental evolution.
+
+The intended progression is:
+
+Modular Monolith
+
+↓
+
+Domain Events
+
+↓
+
+In-Memory Event Bus
+
+↓
+
+Outbox Pattern
+
+↓
+
+Saga Orchestration
+
+↓
+
+Kafka
+
+↓
+
+Selective Service Extraction
+
+Each stage builds upon the previous one.
+
+---
+
+## Technology Direction
+
+Backend
 
 - FastAPI
 - Pydantic v2
@@ -39,164 +207,75 @@ Backend:
 - PostgreSQL
 - Redis
 
-Frontend:
+Frontend
 
 - React
 - TypeScript
 - React Router
 
-Infrastructure:
+Infrastructure
 
 - Docker
 - Docker Compose
 
-Tooling:
+Tooling
 
-- `pyproject.toml`
-- `uv`
+- uv
 - Ruff
+- Pyright
 - Alembic
-- Environment-based configuration
+- pytest
 
-These technologies are not implemented in Phase 0. They are listed to document the intended direction.
+---
 
-## Repository Structure
+# Repository Layout
 
-```text
-.
-├── apps/
-│   ├── api/
-│   ├── web/
-│   ├── mobile/
-│   └── agents/
-├── docs/
-│   ├── ai/
-│   │   └── prompts/
-│   ├── architecture/
-│   └── workflows/
-├── infra/
-├── scripts/
-└── tests/
-```
+<tree>
 
-## Folder Responsibilities
+---
 
-### `apps/`
+# Repository Organization
 
-Contains executable applications and user-facing or agent-facing entry points.
+Explain each major folder.
 
-### `apps/api/`
+Not implementation.
 
-Reserved for the future FastAPI backend modular monolith.
+Purpose.
 
-This application is expected to hold the core backend runtime, including HTTP APIs, application services, domain modules, persistence, authentication, and future event-publishing integration. It remains empty in Phase 0.
+---
 
-### `apps/web/`
+# Documentation
 
-Reserved for the future React and TypeScript web application.
+README.md
 
-### `apps/mobile/`
+Vision and architecture.
 
-Reserved for a future mobile application.
+roadmap.md
 
-The specific mobile framework is intentionally not selected in Phase 0 because the current phase does not require that decision.
+Implementation plan.
 
-### `apps/agents/`
+authentication-spec.md
 
-Reserved for future AI agent entry points.
+Authentication requirements.
 
-Agent workflows are separated from the main API surface so they can evolve independently while still integrating with the same backend capabilities.
+project-handover.md
 
-### `docs/`
+Current implementation status.
 
-Contains repository documentation.
+decisions.md
 
-Top-level project documents include the roadmap, architecture decisions,
-authentication specification, and project handover notes.
+Architecture Decision Records (ADRs).
 
-### `docs/ai/prompts/`
+---
 
-Contains reusable AI prompts for phase starts, implementation work,
-architecture review, documentation updates, ADR checks, and phase completion.
+# Development Philosophy
 
-### `docs/architecture/`
+The project values:
 
-Reserved for architecture notes, diagrams, and future Architecture Decision Records.
-
-### `docs/workflows/`
-
-Contains development and operational workflows, including database migration
-workflow documentation.
-
-### `infra/`
-
-Reserved for infrastructure and local development configuration.
-
-Docker and Docker Compose will be introduced in a later phase, not in Phase 0.
-
-### `scripts/`
-
-Reserved for developer and operational helper scripts.
-
-### `tests/`
-
-Reserved for future integration, contract, and cross-application tests.
-
-Unit tests may later live close to the code they test if that improves maintainability.
-
-## Architectural Decisions
-
-### Modular monolith first
-
-A modular monolith is the starting point because it gives the project strong internal boundaries without the complexity of distributed systems.
-
-Microservices are not introduced at the beginning because they add deployment, observability, networking, data consistency, and operational overhead that is not justified before the domain boundaries are proven.
-
-### DDD-inspired boundaries
-
-The project will use DDD-inspired module boundaries to keep business capabilities understandable and independently evolvable.
-
-Full tactical DDD is not forced at this stage because over-modeling early can slow development and create abstractions before the domain is understood.
-
-### CQRS where beneficial
-
-CQRS may be introduced selectively where read and write concerns benefit from separation.
-
-CQRS is not applied globally by default because it can add unnecessary complexity to simple workflows.
-
-### Stateless authentication direction
-
-Authentication is expected to be stateless and OAuth 2.1 / OIDC ready.
-
-It is not implemented in Phase 0 because authentication requires careful modeling, configuration, token strategy, and security review.
-
-### State-machine-driven authentication flow
-
-Authentication flow is expected to use an explicit state-machine approach later.
-
-This is deferred because Phase 0 is only the repository foundation.
-
-### Future event-driven evolution
-
-The platform should be able to evolve toward domain events, an Outbox Pattern, Saga orchestration, and Kafka integration.
-
-These are not created now because premature event infrastructure can obscure the core model and increase maintenance cost.
-
-## Current Phase
-
-Phase 0 creates only:
-
-- Repository documentation
-- Ignore rules
-- Initial folder structure
-
-Phase 0 intentionally does not create:
-
-- FastAPI application code
-- Docker files
-- Database configuration
-- Redis configuration
-- Authentication
-- Business logic
-- Migrations
-- Frontend implementation
+- Maintainability over cleverness
+- Explicit contracts over implicit behavior
+- Strong typing
+- Simple abstractions
+- Clear boundaries
+- Incremental evolution
+- Documentation-driven development

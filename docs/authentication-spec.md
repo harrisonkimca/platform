@@ -1,9 +1,30 @@
-AUTHENTICATION FLOW SPEC — passwordless fintech app
+# Authentication Flow Spec
 
-CORE PRINCIPLE
+## Purpose
+
+This document defines the required authentication behavior of the
+platform.
+
+Responsibilities
+
+- Define authentication workflows.
+- Define security requirements.
+- Define recovery behavior.
+- Define session behavior.
+- Define trust-level behavior.
+
+This document specifies how authentication must behave regardless of the
+implementation.
+
+It is independent of implementation details and changes only when the
+authentication requirements change.
+
+## Core Principle
+
 No password field anywhere in the user model.
 
-TOKEN ARCHITECTURE
+## Token Architecture
+
 - Access token: JWT, signed (RS256/ES256), 5-15min expiry, httpOnly 
   + Secure + SameSite=Strict cookie. Verified by signature/expiry 
   only — no DB lookup, fully stateless. Accept that a stolen token 
@@ -87,7 +108,8 @@ TOKEN ARCHITECTURE
    - "Log out all devices" / revoke-all-sessions control.
    - Backup email and linked OAuth identities manageable here.
 
-SECURITY NOTES
+## Security Notes
+
 - Email-OTP-only sessions (no passkey activated) are accepted as a 
   lower-trust tier — fine for read-only/low-risk actions, blocked 
   from sensitive actions by the gate in (4). Security posture 
