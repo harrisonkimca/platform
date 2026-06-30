@@ -65,6 +65,31 @@ Updated only when a new ADR is required.
 
 ---
 
+# Starting a New AI Session
+
+Every new ChatGPT or Codex session begins with the same project context.
+
+Provide:
+
+* `README.md`
+* `docs/roadmap.md`
+* `docs/project-handover.md`
+* `docs/authentication-spec.md`
+* `docs/decisions.md`
+
+Additionally, you may provide:
+
+* `docs/ai/ai-sdlc.md`
+
+The AI SDLC defines the development process and prompt responsibilities.
+Providing it helps establish a consistent workflow but is not required to
+understand the current state of the project.
+
+After loading the project context, provide the prompt appropriate for the
+current stage of the SDLC.
+
+---
+
 # Determining the Next Work Item
 
 Before beginning an implementation session, determine the current
