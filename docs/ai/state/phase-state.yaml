@@ -1,0 +1,18 @@
+# docs/ai/state/phase-state.yaml
+#
+# Single-purpose machine state file for the AI SDLC pipeline.
+# Two write zones, two owners — see docs/ai/ai-sdlc.md > "Phase State File".
+# This file contains no narrative content. Do not add prose, history, or
+# explanations here — that belongs in docs/snapshot.md.
+#
+# roadmap_status describes the current phase's progress. 
+# docs/roadmap.md itself carries no status — status lives here only.
+
+current_phase: 9
+current_phase_name: "Stateless Authentication"
+roadmap_status: current   # not_started | current | complete
+
+# sdlc_stage identifies the NEXT stage to run within the current phase.
+# Every stage (01-06) advances this on completion. Stage 6 resets it to
+# 01-start after a phase transition.
+sdlc_stage: 01-start   # 01-start | 02-build | 03-review | 04-update-docs | 05-review-adr | 06-complete

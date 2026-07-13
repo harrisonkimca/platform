@@ -1,4 +1,4 @@
-# Architecture Decision Records
+# Architecture Decision Record Log
 
 ## Purpose
 
@@ -7,23 +7,23 @@ the design and evolution of the project.
 
 Responsibilities
 
-* Record significant architectural decisions.
-* Define long-term architectural constraints.
-* Preserve the history of architectural decisions.
-* Guide future implementation without recording implementation progress.
+* Record significant architectural decisions
+* Define long-term architectural constraints
+* Preserve the history of architectural decisions
+* Guide future implementation without recording implementation progress
 
 This document is **not**:
 
-* an implementation log,
-* a project status report,
-* a roadmap,
-* or a design discussion.
+* An implementation log
+* A project status report
+* A roadmap
+* A design discussion
 
 Architectural decisions should be recorded only when a decision:
 
-* affects future development,
-* introduces a long-term architectural constraint,
-* or changes the architectural direction of the project.
+* Affects future development
+* Introduces a long-term architectural constraint
+* Changes the architectural direction of the project
 
 Existing ADRs are historical records and must never be modified or
 removed.
@@ -33,7 +33,6 @@ the previous decision rather than rewriting history.
 
 This document changes only when a new architectural decision is made.
 
----
 
 # ADR-001 — Passwordless-First Authentication
 
@@ -61,7 +60,6 @@ Supported authentication methods include:
 
 Password reset workflows are not required.
 
----
 
 # ADR-002 — Generic Credential Model
 
@@ -91,7 +89,6 @@ The Credential aggregate must support:
 Future credential types should integrate into the existing model
 whenever practical.
 
----
 
 # ADR-003 — CredentialSubject Abstraction
 
@@ -114,7 +111,6 @@ Credential implementations remain provider-agnostic.
 New authentication providers can be introduced without changing
 aggregate boundaries.
 
----
 
 # ADR-004 — AuthenticationStateMachine Owns Authentication State
 
@@ -140,7 +136,6 @@ responsibilities.
 
 Authentication workflows can evolve independently.
 
----
 
 # ADR-005 — Repository Contracts Before Persistence Implementations
 
@@ -161,7 +156,6 @@ Repository interfaces exist before SQLAlchemy implementations.
 
 Persistence remains isolated within the infrastructure layer.
 
----
 
 # ADR-006 — Pyright Strict Mode
 

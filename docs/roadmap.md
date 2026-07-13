@@ -6,14 +6,18 @@ This document is the implementation contract for the project.
 
 Responsibilities
 
-- Define the implementation phases.
-- Define the deliverables for each phase.
-- Record implementation progress.
-- Define the order in which work is completed.
+* Define the implementation phases
+* Define the deliverables for each phase
+* Define the order in which work is completed
 
 This document defines what the repository should implement next.
 
 It does not describe the current implementation state.
+
+Phase status is governed by `docs/ai/state/phase-state.yaml`: phases
+numbered below `current_phase` are Complete, the phase matching
+`current_phase` is Current, and phases numbered above it are Not Started.
+
 
 ## Overall Vision
 
@@ -34,17 +38,12 @@ The platform is intended to support:
 * AI streaming infrastructure
 * Future AI agent support
 
----
 
 # Phase 0 - Project Foundation
 
 Goal:
 
 Establish repository structure, documentation, ignore rules, and development standards.
-
-Status:
-
-Complete
 
 Deliverables:
 
@@ -54,17 +53,12 @@ Deliverables:
 * Test folder structure
 * Application folder placeholders
 
----
 
 # Phase 1 - Core Architecture Foundation
 
 Goal:
 
 Establish modular monolith architecture and bounded-context direction.
-
-Status:
-
-Complete
 
 Deliverables:
 
@@ -73,17 +67,12 @@ Deliverables:
 * DDD-inspired layer boundaries
 * Initial context placeholders
 
----
 
 # Phase 2 - Shared Building Blocks
 
 Goal:
 
 Create shared application and infrastructure foundations.
-
-Status:
-
-Complete
 
 Deliverables:
 
@@ -92,17 +81,12 @@ Deliverables:
 * Shared infrastructure layer
 * SQLAlchemy Unit of Work implementation
 
----
 
 # Phase 3 - Infrastructure Foundation
 
 Goal:
 
 Create local development and persistence foundations.
-
-Status:
-
-Complete
 
 Deliverables:
 
@@ -115,17 +99,12 @@ Deliverables:
 * Async SQLAlchemy session setup
 * Alembic configuration
 
----
 
 # Phase 4 - API Foundation
 
 Goal:
 
 Create FastAPI entry points and application wiring.
-
-Status:
-
-Complete
 
 Deliverables:
 
@@ -135,7 +114,6 @@ Deliverables:
 * Health endpoint
 * Settings dependency
 
----
 
 # Phase 5 - Security Foundation
 
@@ -143,17 +121,12 @@ Goal:
 
 Establish minimal security-related configuration foundations.
 
-Status:
-
-Complete
-
 Deliverables:
 
 * Required application secret configuration
 * Environment validation
 * Production debug-mode guard
 
----
 
 # Phase 6 - Authentication Foundations
 
@@ -161,17 +134,12 @@ Goal:
 
 Prepare the project for passwordless authentication modeling.
 
-Status:
-
-Complete
-
 Deliverables:
 
 * Passwordless authentication requirements documented
 * Authentication architecture decisions documented
 * Identity context prepared for authentication domain modeling
 
----
 
 # Phase 7 - Identity Domain
 
@@ -179,10 +147,6 @@ Goal:
 
 Implement the core Identity domain foundation that supports passwordless authentication methods while remaining independent of transport, persistence, and external identity providers.
 
-Status:
-
-Complete
-
 Deliverables:
 
 * User aggregate
@@ -195,21 +159,6 @@ Deliverables:
 * Authentication state machine contracts
 * Recovery model foundations
 
-Progress:
-
-Completed:
-
-* User aggregate
-* Credential entity
-* AuthChallenge entity
-* AuthSession entity
-* Identity value objects
-* Repository contracts
-* Domain service contracts
-* Authentication state machine contracts
-* Recovery model foundations
-
----
 
 # Phase 8 - Authentication State Machine
 
@@ -217,10 +166,6 @@ Goal:
 
 Implement authentication workflow orchestration.
 
-Status:
-
-Complete
-
 Deliverables:
 
 * AuthenticationStateMachine implementation
@@ -232,30 +177,12 @@ Deliverables:
 * Recovery transitions
 * Trust-level transitions
 
-Progress:
-
-Completed:
-
-* AuthenticationStateMachine implementation
-* Authentication triggers
-* State transition rules
-* Guard implementations
-* Provider contracts
-* Provider authentication orchestration
-* Recovery transitions
-* Trust-level transitions
-
----
 
 # Phase 9 - Stateless Authentication
 
 Goal:
 
 Implement token-based authentication.
-
-Status:
-
-Current
 
 Deliverables:
 
@@ -266,17 +193,12 @@ Deliverables:
 * Refresh reuse detection
 * Session revocation support
 
----
 
 # Phase 10 - Authentication Application Layer
 
 Goal:
 
 Implement authentication use cases.
-
-Status:
-
-Not Started
 
 Deliverables:
 
@@ -286,17 +208,12 @@ Deliverables:
 * Session workflows
 * Recovery workflows
 
----
 
 # Phase 11 - Passkeys (WebAuthn)
 
 Goal:
 
 Implement passkey registration and authentication.
-
-Status:
-
-Not Started
 
 Deliverables:
 
@@ -305,17 +222,12 @@ Deliverables:
 * Credential management
 * Multi-device passkeys
 
----
 
 # Phase 12 - Recovery System
 
 Goal:
 
 Implement tiered account recovery.
-
-Status:
-
-Not Started
 
 Deliverables:
 
@@ -324,7 +236,6 @@ Deliverables:
 * Recovery notifications
 * Risk-based recovery controls
 
----
 
 # Phase 13 - Domain Events
 
@@ -332,17 +243,12 @@ Goal:
 
 Introduce domain events.
 
-Status:
-
-Not Started
-
 Deliverables:
 
 * Domain event contracts
 * Event publication model
 * Event dispatch abstractions
 
----
 
 # Phase 14 - In-Memory Event Bus
 
@@ -350,17 +256,12 @@ Goal:
 
 Implement internal event dispatching.
 
-Status:
-
-Not Started
-
 Deliverables:
 
 * Event bus
 * Event handlers
 * Event subscriptions
 
----
 
 # Phase 15 - CQRS Foundation
 
@@ -368,17 +269,12 @@ Goal:
 
 Prepare command and query separation.
 
-Status:
-
-Not Started
-
 Deliverables:
 
 * Command contracts
 * Query contracts
 * Handler contracts
 
----
 
 # Phase 16 - Read Models
 
@@ -386,17 +282,12 @@ Goal:
 
 Create dedicated query projections.
 
-Status:
-
-Not Started
-
 Deliverables:
 
 * Read models
 * Projection handlers
 * Query services
 
----
 
 # Phase 17 - Background Jobs
 
@@ -404,17 +295,12 @@ Goal:
 
 Implement asynchronous processing.
 
-Status:
-
-Not Started
-
 Deliverables:
 
 * Job contracts
 * Scheduling infrastructure
 * Worker execution
 
----
 
 # Phase 18 - Outbox Pattern
 
@@ -422,17 +308,12 @@ Goal:
 
 Provide reliable event publication.
 
-Status:
-
-Not Started
-
 Deliverables:
 
 * Outbox table
 * Outbox relay
 * Retry handling
 
----
 
 # Phase 19 - Saga Orchestration
 
@@ -440,17 +321,12 @@ Goal:
 
 Coordinate long-running workflows.
 
-Status:
-
-Not Started
-
 Deliverables:
 
 * Saga contracts
 * Saga state management
 * Authentication recovery workflows
 
----
 
 # Phase 20 - AI Streaming Infrastructure
 
@@ -458,17 +334,12 @@ Goal:
 
 Provide streaming foundations for future AI features.
 
-Status:
-
-Not Started
-
 Deliverables:
 
 * Streaming abstractions
 * Token streaming support
 * Transport contracts
 
----
 
 # Phase 21 - AI Agent Framework
 
@@ -476,17 +347,12 @@ Goal:
 
 Support agent-based workflows.
 
-Status:
-
-Not Started
-
 Deliverables:
 
 * Agent abstractions
 * Tool execution framework
 * Agent orchestration
 
----
 
 # Phase 22 - Multi-Service Extraction
 
@@ -494,27 +360,18 @@ Goal:
 
 Prepare bounded contexts for independent deployment.
 
-Status:
-
-Not Started
-
 Deliverables:
 
 * Context isolation review
 * Integration boundaries
 * Deployment strategy
 
----
 
 # Phase 23 - Kafka Integration
 
 Goal:
 
 Introduce external event streaming.
-
-Status:
-
-Not Started
 
 Deliverables:
 

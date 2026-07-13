@@ -200,6 +200,6 @@ Until service extraction occurs, all schema evolution remains managed through th
 
 # Related Documents
 
-* project-handover.md
+* snapshot.md
 * roadmap.md
-* decisions.md
+* adr-log.md

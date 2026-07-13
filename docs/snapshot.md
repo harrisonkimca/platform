@@ -1,4 +1,4 @@
-# Project Handover
+# Snapshot
 
 ## Purpose
 
@@ -6,12 +6,11 @@ This document is a snapshot of the current repository implementation.
 
 Responsibilities
 
-- Describe what currently exists in the repository.
-- Summarize the implemented architecture.
-- Record the current implementation phase.
-- Describe implemented domain concepts.
-- Describe implemented infrastructure.
-- Describe outstanding implementation work.
+* Describe what currently exists in the repository
+* Summarize the implemented architecture
+* Describe implemented domain concepts
+* Describe implemented infrastructure
+* Describe outstanding implementation work
 
 This document is updated after implementation work.
 
@@ -27,26 +26,13 @@ Supporting documents:
 
 * `README.md`
 * `docs/roadmap.md`
-* `docs/authentication-spec.md`
-* `docs/decisions.md`
+* `docs/auth-spec.md`
+* `docs/adr-log.md`
 
----
+Phase and SDLC pipeline position:
 
-# Repository Status
+* `docs/ai/state/phase-state.yaml`
 
-Current phase:
-
-* Phase 9 – Stateless Authentication
-
-Current step:
-
-* Phase 9 start
-
-Repository status:
-
-* In Progress
-
----
 
 # Implemented Contexts
 
@@ -79,7 +65,6 @@ Directory skeletons only:
 * transactions
 * notifications
 
----
 
 # Implemented Layers
 
@@ -146,7 +131,6 @@ Folder skeleton only.
 
 Folder skeleton only.
 
----
 
 # Implemented Domain Concepts
 
@@ -279,7 +263,6 @@ Current behavior:
 
 Persistence-aware authentication use cases do not yet exist.
 
----
 
 # Implemented Infrastructure
 
@@ -309,7 +292,6 @@ Not yet implemented:
 * Environment configuration
 * Database configuration
 
----
 
 # Configured Tooling
 
@@ -333,33 +315,14 @@ Current status:
 
 * All passing
 
----
 
 # Outstanding Implementation
 
-Current Phase:
-
-* Phase 9 – Stateless Authentication
-
-Current SDLC step:
-
-* Phase start
-
 Outstanding:
 
-* Begin Phase 9 using the Phase Start prompt.
-* Implement access token issuance.
-* Implement refresh token issuance.
-* Implement token versioning.
-* Implement refresh rotation.
-* Implement refresh reuse detection.
-* Implement session revocation support.
-
----
-
-# Reference Documents
-
-* README.md
-* docs/roadmap.md
-* docs/authentication-spec.md
-* docs/decisions.md
+* Implement access token issuance
+* Implement refresh token issuance
+* Implement token versioning
+* Implement refresh rotation
+* Implement refresh reuse detection
+* Implement session revocation support
