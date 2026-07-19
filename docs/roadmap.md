@@ -14,9 +14,15 @@ This document defines what the repository should implement next.
 
 It does not describe the current implementation state.
 
-Phase status is governed by `docs/ai/state/phase-state.yaml`: phases
-numbered below `current_phase` are Complete, the phase matching
-`current_phase` is Current, and phases numbered above it are Not Started.
+Phase status is governed by `docs/ai/state/phase-state.yaml`.
+
+While `roadmap_status: current`, phases numbered below `current_phase`
+are Complete, the matching phase is Current, and phases numbered above
+it are Not Started.
+
+When `roadmap_status: complete`, the final phase identified by
+`current_phase` is also Complete and no numbered development stage is
+authorized.
 
 
 ## Overall Vision

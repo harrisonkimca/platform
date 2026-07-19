@@ -314,7 +314,16 @@ Quality gates:
 Current status:
 
 * All passing
+* Verification under the current Stage 3 workflow has not yet been recorded
 
+# Current Risks
+
+Record only material risks that currently affect the implemented
+repository.
+
+Current risks:
+
+* None recorded
 
 # Outstanding Implementation
 

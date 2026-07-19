@@ -1,7 +1,16 @@
 # Review Repository
 
-This maintenance prompt executes the Review Repository defined by
-`docs/ai/ai-sdlc.md`.
+This prompt is the authoritative execution contract for the Review Repository maintenance workflow.
+
+It operates within the governance, document authority, escalation, and ownership rules defined in `docs/ai/ai-sdlc.md`.
+
+
+## Role
+
+Act as the Repository Auditor for the current repository and roadmap phase.
+
+This role does not grant authority beyond the permissions defined by
+`docs/ai/ai-sdlc.md` and this prompt.
 
 
 ## Purpose
@@ -41,10 +50,16 @@ Persist the audit report to:
 
 `docs/reports/review-repository-report.md`
 
+Begin the report with the maintenance YAML front matter defined in
+`docs/ai/ai-sdlc.md > Report Metadata`, using:
+
+* `workflow: review-repository`
+* the determined audit outcome
+* the recommended `next_action`
+
 This report becomes the authoritative working input for:
 
 * `docs/ai/prompts/maintenance/reconcile-docs.md`
-
 
 ## Responsibilities
 
@@ -52,7 +67,7 @@ Compare the repository implementation against:
 
 * Project documentation
 * Roadmap deliverables
-* Phase-state.yaml pipeline position
+* `phase-state.yaml` pipeline position and status
 * Authentication specification
 * ADRs
 
@@ -70,6 +85,43 @@ Recommend repository maintenance actions where required.
 
 Produce a report containing:
 
+### Audit Outcome
+
+Record one of:
+
+* `aligned`
+* `findings_detected`
+* `blocked`
+
+Classify each finding in the report as one or more of:
+
+* Documentation drift
+* State drift
+* Implementation violation
+* Roadmap inconsistency
+* Architectural inconsistency
+
+### Recommended Next Action
+
+Record one primary `next_action`:
+
+* `none` — no corrective work is required
+* `reconcile-docs` — verified drift falls within reconciliation authority
+* `01-start` — scope, requirements, roadmap, or architecture must be reconsidered
+* `02-build` — implementation correction is required
+* `03-review` — architecture or quality verification must be repeated
+* `04-update-docs` — normal lifecycle documentation synchronization is required
+* `05-review-adr` — ADR review is required
+* `review-dependency` — a dedicated dependency audit is required
+* `manual-governance` — a protected normative document requires an approved manual change
+
+When multiple actions are required, record the earliest invalidated
+normal SDLC stage as the primary action and list the others in the report.
+
+Do not select `reconcile-docs` as the primary action when the same
+findings invalidate an earlier numbered development stage. Reconciliation
+may still be listed as a supporting action.
+
 ### 1. Repository Summary
 
 Report:
@@ -84,7 +136,8 @@ Repository Health Score:
 * Documentation health (1–10)
 * Roadmap alignment (1–10)
 * Test health (1–10)
-* Dependency health (1–10)
+* Dependency health — reference the latest Dependency Review Report when
+  available; otherwise record `Not assessed`
 * Overall health (1–10)
 
 
@@ -183,8 +236,8 @@ Summarize:
 * Areas not covered
 
 Flag any completed roadmap phase whose deliverables lack corresponding
-test coverage — this indicates Stage 3's verification was bypassed or
-incorrect in a prior session.
+test coverage. Report the missing evidence without assuming why it is
+absent.
 
 ### 9. Roadmap Audit
 
@@ -208,7 +261,9 @@ Identify:
 * Whether `current_phase` matches the phase the implementation actually reflects
 * Whether `roadmap_status` matches the verified completion state of that phase
 * Whether `sdlc_stage` matches the last SDLC stage actually completed
-
+* Whether `sdlc_status` correctly identifies the selected stage as ready or blocked
+* Whether the recorded stage outcome supports the current
+  `sdlc_stage` and `sdlc_status`
 
 ### 11. Project Handover Audit
 
@@ -277,7 +332,8 @@ Summarize:
 Provide:
 
 * Recommended updates to `snapshot.md`
-* Recommended updates to `docs/ai/state/phase-state.yaml`
+* Recommended updates to `docs/ai/state/phase-state.yaml`, including
+  `sdlc_status` where state drift is verified
 * Recommended updates to `roadmap.md`, if a phase's stated goal 
   or deliverables are found to be genuinely incorrect
 * Whether an Architecture Decision Review should be performed
@@ -288,9 +344,17 @@ Provide:
 
 Do not:
 
-* Modify source code,
-* Modify documentation,
-* Reinterpret the implemented architecture,
-* Recommend implementation beyond the documented roadmap,
-* Propose future architecture beyond the documented roadmap,
-* Report Git status unless explicitly requested.
+* Modify source code
+* Modify documentation
+* Reinterpret the implemented architecture
+* Recommend implementation beyond the documented roadmap
+* Propose future architecture beyond the documented roadmap
+* Report Git status unless explicitly requested
+
+
+## Success Criteria
+
+The report accurately distinguishes implementation facts, documentation
+drift, state drift, and normative-document conflicts; records evidence
+for every finding; and recommends the earliest authorized corrective
+action without modifying the repository.

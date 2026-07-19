@@ -1,7 +1,16 @@
 # Stage 5 — Review Architecture Decision Records
 
-This prompt executes Stage 5 (Review Architecture Decision Records) as defined by
-`docs/ai/ai-sdlc.md`.
+This prompt is the authoritative execution contract for Stage 5 (Review Architecture Decision Records). 
+
+It operates within the cross-stage governance, document authority, escalation, and ownership rules defined in `docs/ai/ai-sdlc.md`.
+
+
+## Role
+
+Act as the Architecture Decision Custodian for the currently authorized roadmap phase.
+
+This role does not grant authority beyond the permissions defined by
+`docs/ai/ai-sdlc.md` and this prompt.
 
 
 ## Purpose
@@ -30,19 +39,53 @@ Load:
 * `docs/adr-log.md`
 * `docs/ai/state/phase-state.yaml`
 
-Load the current documentation update report:
+Confirm before proceeding:
 
+* `sdlc_stage` is `05-review-adr`
+* `sdlc_status` is `ready`
+
+Load the current implementation and review reports:
+
+* `docs/reports/02-build-report.md`
+* `docs/reports/03-review-report.md`
 * `docs/reports/04-update-docs-report.md`
+
+Inspect the implemented repository changes directly.
+
+Verify that all reports record `phase` matching
+`phase-state.yaml > current_phase`.
+
+Verify the Implementation Report records:
+
+* `stage: 02-build`
+* `outcome: completed`
+* `next_stage: 03-review`
+
+Verify the Architecture Review Report records:
+
+* `stage: 03-review`
+* `outcome: approved`
+* `next_stage: 04-update-docs`
+
+Verify the Documentation Update Report records:
+
+* `stage: 04-update-docs`
+* `outcome: synchronized`
+* `next_stage: 05-review-adr`
 
 
 ## Responsibilities
 
-Determine whether implementation introduced a new permanent
+Determine whether the implementation introduced a new permanent
 architectural decision.
 
-If a new permanent architectural decision was introduced:
+If an approved new permanent architectural decision was introduced:
 
 * Create a new ADR
+
+If a new ADR is appended, identify the architectural, operational,
+migration, maintenance, and testing risks introduced or changed by the
+decision.
 
 Otherwise:
 
@@ -52,9 +95,45 @@ The burden of proof is to demonstrate that implementation introduced a
 new permanent architectural decision. If sufficient evidence cannot be 
 demonstrated, no new ADR should be created.
 
-On completion, update `docs/ai/state/phase-state.yaml`:
+Determine the stage outcome:
+
+* `completed` — existing ADRs remain sufficient, or an approved permanent
+  architectural decision has been recorded in a new ADR
+* `changes_required` — implementation introduced an unapproved
+  architectural change that must be corrected or formally approved
+* `blocked` — the ADR review cannot be completed from the available
+  evidence
+
+After determining the outcome:
+
+1. Persist the ADR Review Report with its required metadata.
+2. Verify that the report was persisted.
+3. Update `phase-state.yaml` according to the outcome.
+
+If the report cannot be persisted, do not modify `phase-state.yaml`.
+
+If the outcome is `completed`:
 
 * Set `sdlc_stage: 06-complete`
+* Keep `sdlc_status: ready`
+
+If the outcome is `changes_required` and implementation must be corrected:
+
+* Set `sdlc_stage: 02-build`
+* Keep `sdlc_status: ready`
+
+If the outcome is `changes_required` and an intentional architecture
+change requires approval:
+
+* Set `sdlc_stage: 01-start`
+* Set `sdlc_status: blocked`
+
+If the outcome is `blocked`:
+
+* Keep `sdlc_stage: 05-review-adr`
+* Set `sdlc_status: blocked`
+
+Record the finding and required resolution in the report.
 
 Do not modify any other field.
 
@@ -107,6 +186,12 @@ If a new ADR is required:
 
 ADR-XXX
 
+Status:
+...
+
+Date:
+...
+
 Decision:
 ...
 
@@ -116,21 +201,39 @@ Reason:
 Consequences:
 ...
 
+Supersedes:
+...
+
+Superseded by:
+...
+
 
 ## Outputs
 
 Report:
 
-1. Decision — new ADR required, or existing ADRs remain sufficient
-2. Reasoning — summarize architectural reasoning that led to the decision
-3. Existing ADR coverage — ADRs already covering implementation if no new ADR required
-4. Documentation modified (if any)
-5. Non-ADR decisions noted (if any)
+1. Outcome — `completed`, `changes_required`, or `blocked`
+2. Decision — new ADR required, or existing ADRs remain sufficient
+3. Reasoning — summarize architectural reasoning that led to the decision
+4. Existing ADR coverage — ADRs already covering implementation 
+   if no new ADR required
+5. Documentation modified (if any)
+6. Non-ADR decisions noted (if any)
+7. Architectural-decision risk assessment:
+   * Risks introduced or changed by a newly recorded ADR, classified as
+     architectural, operational, migration, maintenance, or testing
+   * `None` when no new ADR was recorded
 
 Persist this report by overwriting:
 
 * `docs/reports/05-review-adr-report.md`
 
+Begin the report with the YAML front matter defined in
+`docs/ai/ai-sdlc.md > Report Metadata`, using:
+
+* `stage: 05-review-adr`
+* the determined outcome
+* the resulting `next_stage`
 
 ## Restrictions
 
@@ -147,11 +250,12 @@ Do not:
   is required
 * Report Git status, commit status, working tree status, branches, or 
   unrelated repository information
-* Modify any `phase-state.yaml` field other than `sdlc_stage`
+* Modify any `phase-state.yaml` field other than `sdlc_stage` and `sdlc_status`
+* Create an ADR solely to legitimize unapproved implementation drift
 
 
 ## Success Criteria
 
-A new ADR exists only when implementation introduced a genuine permanent
-architectural decision; otherwise the existing ADR log is confirmed
-sufficient.
+An outcome of `completed` requires either confirmation that existing ADRs
+remain sufficient or a new ADR recording an approved genuine permanent
+architectural decision.

@@ -2,17 +2,17 @@
 
 ## Purpose
 
-This guide explains how to begin working on the project using the Governed AI Software Development Lifecycle (AI SDLC).
+This guide explains how developers, reviewers, maintainers, architects,
+and AI assistants enter and navigate the Governed AI Software Development
+Lifecycle.
 
-It is intended for developers, reviewers, maintainers, architects, and AI assistants working in the repository.
+It provides onboarding and workflow-routing guidance only.
 
-This guide provides project orientation, explains how to begin a development session, and identifies the appropriate workflow and prompts.
-
-The authoritative definition of the AI SDLC, including stage responsibilities, governance rules, authority models, and workflow constraints, is maintained in:
+Workflow authority, document ownership, stage transitions, and escalation
+rules are defined in:
 
 * `docs/ai/ai-sdlc.md`
 
----
 
 # Core Idea
 
@@ -24,56 +24,77 @@ The objective is to preserve architecture, maintain documentation accuracy, cont
 
 Every implementation session follows a defined SDLC stage.
 
----
+
+# Workflow Execution
+
+The project uses a **Level 0 governed AI workflow**.
+
+Read `docs/ai/state/phase-state.yaml`, execute only the authorized stage prompt, and stop when that stage is complete.
+
+Workflow authority and transition rules are defined in:
+
+* `docs/ai/ai-sdlc.md`
+
 
 # Project Documentation
 
-Before beginning work, load the project's authoritative documentation.
+Load these every session, before executing any SDLC stage:
 
-| Document                         | Responsibility                                                 |
-| -------------------------------- | -------------------------------------------------------------- |
-| `README.md`                      | Project vision and architectural direction                     |
-| `docs/roadmap.md`                | Implementation contract — phase goals and deliverables         |
-| `docs/snapshot.md`               | Current repository implementation                              |
-| `docs/auth-spec.md`              | Authentication behavior and business requirements              |
-| `docs/adr-log.md`                | Permanent architectural decisions                              |
+| Document | Responsibility |
+| --- | --- |
+| `README.md` | Project vision and architectural direction |
+| `docs/roadmap.md` | Implementation contract — phase goals and deliverables |
+| `docs/snapshot.md` | Current repository implementation |
+| `docs/auth-spec.md` | Authentication behavior and business requirements |
+| `docs/adr-log.md` | Permanent architectural decisions |
 | `docs/ai/state/phase-state.yaml` | Current phase, roadmap status, and next SDLC stage |
-| `docs/ai/ai-sdlc.md`             | AI SDLC governance, workflow, and stage responsibilities       |
 
-Each document is authoritative only within its defined responsibility.
+`docs/ai/ai-sdlc.md` governs authority, transitions, escalation, and
+document ownership across stages. It must be loaded before executing
+any development stage.
 
----
+Each document and prompt is authoritative only within its defined responsibility.
+Stage prompts govern stage execution but do not override project documentation or `docs/ai/ai-sdlc.md`.
+
 
 # Reading Order
 
-New contributors should normally read the project documentation in the
-following order:
+Onboarding, read once:
 
 1. README.md
 2. docs/ai/getting-started.md
 3. docs/ai/ai-sdlc.md
-4. The prompt for the current SDLC stage
-5. The current stage report (if one exists)
 
-This order establishes project vision before workflow and workflow before
-implementation.
+This establishes project vision, then workflow, then governance, before
+touching any stage-specific content.
 
----
+Every session:
+
+1. `docs/ai/ai-sdlc.md` — workflow governance and authority
+2. `docs/ai/state/phase-state.yaml` — current phase, authorized stage,
+   and SDLC status
+3. The prompt authorized by `phase-state.yaml`
+4. The project context required by that prompt
+5. Any reports required by that prompt
+
 
 # Starting a Development Session
 
 Begin every new ChatGPT, Codex, or development session by:
 
-1. Loading the project documentation listed above.
-2. Determining the current roadmap phase and next SDLC stage 
-   from `docs/ai/state/phase-state.yaml`.
-3. Confirming the current repository state from `docs/snapshot.md`.
-4. Selecting the appropriate prompt for the work being performed.
-5. Executing only that SDLC stage.
+1. Load `docs/ai/ai-sdlc.md`.
+2. Load `docs/ai/state/phase-state.yaml`.
+3. Verify that `schema_version` is supported.
+4. Confirm the current phase, authorized stage, and `sdlc_status`.
+5. Load the authorized prompt and its required context and reports.
+6. Execute only that stage when `sdlc_status: ready`.
 
-If the current repository state is uncertain, perform a repository review before beginning implementation.
+If `sdlc_status: blocked`, review the current stage report and resolve the
+recorded conflict before resuming the workflow.
 
----
+If repository or documentation state is uncertain, run `review-repository.md` 
+before continuing.
+
 
 # Standard Development Workflow
 
@@ -88,7 +109,8 @@ Every roadmap phase follows the same six-stage workflow.
 | Review Architecture Decision Records | `docs/ai/prompts/development/05-review-adr.md`  |
 | Complete Phase                       | `docs/ai/prompts/development/06-complete.md`    |
 
-Each stage produces a working report that becomes the input to the next stage.
+Each stage produces a working report that becomes handoff evidence for
+one or more later stages, as defined in `docs/ai/ai-sdlc.md`.
 
 | Stage Report                 | File                                    |
 | ---------------------------- | --------------------------------------- |
@@ -99,7 +121,10 @@ Each stage produces a working report that becomes the input to the next stage.
 | Review ADR Report            | `docs/reports/05-review-adr-report.md`  |
 | Complete Phase Report        | `docs/reports/06-complete-report.md`    |
 
-Detailed responsibilities, permissions, inputs, outputs, and success criteria for each stage are defined in:
+Detailed responsibilities, inputs, outputs, and success criteria for
+each stage are defined in its own prompt file, listed above. Cross-stage
+governance — authority, escalation, and document ownership — is defined
+in:
 
 * `docs/ai/ai-sdlc.md`
 
@@ -131,11 +156,15 @@ Maintenance prompts supplement the normal SDLC and do not replace it.
 
 The AI SDLC intentionally assigns a single responsibility to each stage.
 
-Stage responsibilities, governance rules, authority models, quality gates, scope control, escalation procedures, stage reports, and document update permissions are defined exclusively in:
+Each stage's detailed responsibilities, inputs, and outputs are defined
+exclusively in its own prompt file, under `docs/ai/prompts/`. Governance
+rules, authority models, quality gates, scope control, escalation
+procedures, and document update permissions are defined exclusively in:
 
 * `docs/ai/ai-sdlc.md`
 
-This guide intentionally summarizes the workflow rather than duplicating the SDLC specification.
+This guide intentionally summarizes the workflow rather than duplicating
+either the SDLC specification or any individual prompt's instructions.
 
 ---
 
@@ -153,11 +182,14 @@ Typical responsibilities are:
 | Architect or Technical Lead | Review Architecture Decision Records |
 | Project Owner               | Complete Phase                       |
 
-A single developer or AI assistant may perform multiple roles when appropriate.
+A single developer or AI assistant may perform multiple roles across
+separate stage invocations.
 
----
 
 # Need Help Choosing a Prompt?
+
+This table provides navigation guidance only. During the normal SDLC,
+`phase-state.yaml` determines which numbered prompt is authorized to run.
 
 | If you need to...                       | Use...                 |
 | --------------------------------------- | ---------------------- |

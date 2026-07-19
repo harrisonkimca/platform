@@ -1,5 +1,6 @@
 # Authentication Specification
 
+
 ## Purpose
 
 This document defines the required authentication behavior of the
@@ -19,9 +20,18 @@ implementation.
 It is independent of implementation details and changes only when the
 authentication requirements change.
 
+This specification may define mandatory security mechanisms and technical
+constraints where implementation freedom could change required
+authentication behavior or security guarantees.
+
+Implementation must not substitute alternative mechanisms unless this
+specification is intentionally updated.
+
+
 ## Core Principle
 
 No password field anywhere in the user model.
+
 
 ## Token Architecture
 
@@ -107,6 +117,7 @@ No password field anywhere in the user model.
    * List of registered passkeys/devices, with add/revoke.
    * "Log out all devices" / revoke-all-sessions control.
    * Backup email and linked OAuth identities manageable here.
+
 
 ## Security Notes
 
